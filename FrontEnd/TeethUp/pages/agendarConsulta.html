@@ -1,0 +1,106 @@
+﻿<div ng-controller="agendarConsultaController as vm" ng-init="vm.initializeController()">
+    <div class="panel-heading">Agendar Consulta</div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="form-group col-md-4">
+                <label for="exampleInputCodigo">Codigo</label>
+                <input type="number" disabled class="form-control" ng-model="vm.id" placeholder="Codigo">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="exampleInputData">Data Conslta</label>
+                <div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                    <input type="text" class="form-control" ng-model="vm.dataConsulta" date="MM/dd/yyyy" placeholder="Data Consulta">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="exampleInputHora">Hora</label>
+                <input formControlName="start" type="time" class="form-control" ng-model="vm.hora">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-group col-md-4">
+                <label for="exampleInputPaciente">Clinicas</label>
+                <select ng-model="vm.clinica" name="vm.clinica" class="u-full-width form-control"
+                        ng-options="clinica as clinica.nome for clinica in vm.clinicas track by clinica.id"></select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="exampleInputDentista">Dentista</label>
+                <select ng-model="vm.dentista" name="vm.dentista" class="u-full-width form-control"
+                        ng-options="dentista as dentista.nome for dentista in vm.dentistas  track by dentista.id"></select>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="exampleInputPaciente">Paciente</label>
+                <select ng-model="vm.paciente" name="vm.dentista" class="u-full-width form-control"
+                        ng-options="paciente as paciente.nome for paciente in vm.pacientes track by paciente.id"></select>
+            </div>
+        </div>
+        <div class="form-group" ng-show="vm.id">
+            <div class="form-group col-md-8">
+                <label for="exampleInputAtivo">Ativo?</label>
+                <br />
+                <input class="checkbox btn-info" type="checkbox" ng-model="vm.ativo" />
+            </div>
+        </div>
+        <div class="form-group">
+            <hr />
+            <div class="form-group col-md-8">
+                <div style="padding-top:20px">
+                    <alert ng-repeat="alert in vm.alerts" type="{{alert.type}}" close="vm.closeAlert($index)"><div ng-bind-html="vm.messageBox"></div></alert>
+                </div>
+                <div ng-show="pessoaForm.$submitted">
+                    <div ng-show="pessoaForm.exampleInputDentista.$error.required">Preencha o nome</div>
+                    <div ng-show="pessoaForm.exampleInputData.$error.required">Preencha o nome</div>
+                    <div ng-show="pessoaForm.exampleInputHora.$error.required">Preencha o nome</div>
+                    <div ng-show="pessoaForm.nome.$error.minlength">Nome precisa ter pelo menos 10 caracteres</div>
+                </div>
+                <br>
+                <button type="button" class="btn btn-info" ng-click="vm.clean()">Novo</button>
+                <button type="submit" class="btn btn-success" ng-click="vm.save()">Salvar</button>
+                <button type="button" class="btn btn-danger" ng-click="vm.delete()">Excluir</button>
+                <button type="button" class="btn btn-warning" ng-click="vm.executeInquiry()">Pesquisar</button>                
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">        
+        <div class="box">
+            <div class="box-header">
+                <div class="input-group box-tools  col-md-5">
+                    <input type="text" class="form-control" ng-model="criterio"
+                           placeholder="O que voce esta procurando?" />
+                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                </div>
+                <hr />
+                <div class="box-body no-padding">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th ng:repeat="tableHeader in vm.tableHeaders" ng:class="vm.setSortIndicator(tableHeader.label)" ng:click="vm.changeSorting(tableHeader.label)">{{tableHeader.label}}</th>
+                            </tr>
+                            <tr ng-repeat="consulta in vm.consultas | filter:criterio" ng-click="seleciona(consulta);">
+                                <td><span>{{consulta.id}}</span></td>
+                                <td>{{consulta.dataConsulta | date:'EEEE'}}</td>
+                                <td><span class="badge bg-light-blue">{{consulta.dataConsulta | date:'dd/MM/yyyy'}}</span></td>
+                                <td><span class="badge bg-green">{{consulta.hora}}</span></td>
+                                <td><span>{{consulta.clinica.nome}}</span></td>
+                                <td><span>{{consulta.dentista.nome}}</span></td>
+                                <td><span>{{consulta.paciente.nome}}</span></td>
+                                <td><span>{{consulta.ativo  ? 'Ativo' : 'Inativo'}}</span></td>
+                                <td>
+                                    <a href="#" title="Alterar" class="" ng-click="vm.edit(consulta)">
+                                        <span class="fa fa-pencil" style="color:#1a2226"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

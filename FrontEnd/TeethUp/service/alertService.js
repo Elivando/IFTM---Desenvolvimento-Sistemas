@@ -1,0 +1,97 @@
+﻿
+//alert("alert service");
+
+console.log("alert service");
+
+angular.module('teethUpApp').service('alertService', ['$rootScope', 'inform', function ($rootScope, inform) {
+
+    $rootScope.alerts = [];
+    $rootScope.messageBox = "";
+
+    var _alerts = [];
+    var _messageBox = "";
+
+    this.setValidationErrors = function (scope, validationErrors) {
+
+        for (var prop in validationErrors) {
+            var property = prop + "InputError";
+            scope[property] = true;
+        }
+
+    }
+
+    this.returnFormattedMessage = function () {
+        var mArray = _messageBox.split('<br/>');
+        var msgs = '';
+        mArray.forEach(function (entry) {
+            if (entry != '')
+                inform.add(entry, {
+                    type: _alerts[0].type
+                });
+        });
+
+
+        return _messageBox;
+    }
+
+    this.returnAlerts = function () {
+        return _alerts;
+    }
+
+    this.renderErrorMessage = function (message) {
+
+        var messageBox = formatMessage(message);
+
+        _alerts = [];
+        _messageBox = messageBox;
+        _alerts.push({ 'type': 'danger', 'msg': '' });
+
+    };
+
+    this.renderSuccessMessage = function (message) {
+
+        var messageBox = formatMessage(message);
+
+        _alerts = [];
+        _messageBox = messageBox;
+        _alerts.push({ 'type': 'success', 'msg': '' });
+
+    };
+
+    this.renderWarningMessage = function (message) {
+
+        var messageBox = formatMessage(message);
+
+        _alerts = [];
+        _messageBox = messageBox;
+        _alerts.push({ 'type': 'warning', 'msg': '' });
+
+    };
+
+    this.renderInformationalMessage = function (message) {
+
+        var messageBox = formatMessage(message);
+
+        _alerts = [];
+        _messageBox = messageBox;
+        _alerts.push({ 'type': 'info', 'msg': '' });
+
+    };
+
+    function formatMessage(message) {
+        var messageBox = "";
+        if (angular.isArray(message) == true) {
+            for (var i = 0; i < message.length; i++) {
+                messageBox = messageBox + message[i] + '<br/>';
+            }
+        }
+        else {
+            messageBox = message;
+        }
+
+        return messageBox;
+
+    }
+
+
+}]);

@@ -1,0 +1,31 @@
+﻿<div ng-controller="consultaController as vm" ng-init="vm.initializeController()">
+    <div class="col-md-6">
+        <div class="box">
+            <div class="box-header">
+                <img src="img/teeth-logo.png" class="img-circle" style="height:40px;width:40px;" alt="User Image">
+                <h3 class="box-title">Consultas Agendadas</h3>
+                <div class="box-tools">
+                    <pagination boundary-links="true" total-items="vm.totalRows" items-per-page="vm.pageSize" ng-change="vm.pageChanged()" max-size="5"
+                                ng-model="vm.currentPageNumber" class="pagination pagination-sm no-margin pull-right" previous-text="<<" next-text=">>" first-text="Prmeiro" last-text="Último"></pagination>
+
+                </div>
+            </div>
+            <div class="box-body no-padding">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th ng:repeat="tableHeader in vm.tableHeaders" ng:class="vm.setSortIndicator(tableHeader.label)" ng:click="vm.changeSorting(tableHeader.label)">{{tableHeader.label}}</th>
+                        </tr>
+                        <tr ng-repeat="consulta in vm.consultas">
+                            <td>{{consulta.dataConsulta | date:'EEEE'}}</td>
+                            <td><span class="badge bg-light-blue">{{consulta.dataConsulta | date:'dd/MM/yyyy'}}</span></td>
+                            <td><span class="badge bg-green">{{consulta.hora}}</span></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
